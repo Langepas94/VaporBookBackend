@@ -14,4 +14,8 @@ func routes(_ app: Application) throws {
         let book = try req.content.decode(Book.self)
         return book.save(on: req.db).map({book})
     }
+    
+    app.get("api", "books") { req -> EventLoopFuture<[Book]> in
+        Book.query(on: req.db).all()
+    }
 }
