@@ -10,5 +10,8 @@ func routes(_ app: Application) throws {
         "Hello, world!"
     }
 
-    try app.register(collection: TodoController())
+    app.post("api", "books") { req -> EventLoopFuture<Book> in
+        let book = try req.content.decode(Book.self)
+        return book.save(on: req.db).map({book})
+    }
 }

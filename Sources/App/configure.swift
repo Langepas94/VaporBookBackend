@@ -17,7 +17,12 @@ public func configure(_ app: Application) async throws {
         tls: .prefer(try .init(configuration: .clientDefault)))
     ), as: .psql)
 
-    app.migrations.add(CreateTodo())
+    // register migrations
+    app.migrations.add(CreateBook())
+    
+    try app.autoMigrate().wait()
+    
+    app.logger.logLevel = .debug
 
     // register routes
     try routes(app)
